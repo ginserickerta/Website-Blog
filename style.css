@@ -344,6 +344,40 @@ img { max-width: 100%; display: block; }
 .book-link:hover .arrow { transform: translateX(4px); }
 
 /* ============================================================
+   AD POSTERS
+   ============================================================ */
+.poster-section {
+  padding: var(--space-xl) 0 var(--space-2xl);
+  border-top: 1px solid var(--border);
+}
+.poster-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+.poster-card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,.08);
+  transition: transform .4s var(--ease-smooth), box-shadow .4s var(--ease-smooth);
+}
+.poster-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.14);
+}
+.poster-card img {
+  width: 100%; height: auto; display: block;
+}
+.poster-card figcaption {
+  font-size: .75rem; color: var(--text-muted);
+  text-align: center; padding: var(--space-sm);
+  font-style: italic; background: var(--bg-card);
+}
+@media (max-width: 580px) {
+  .poster-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
    VIDEO SECTION
    ============================================================ */
 .video-section {
@@ -413,6 +447,43 @@ img { max-width: 100%; display: block; }
 .video-caption {
   font-size: .78rem; color: var(--text-muted); margin-top: var(--space-sm);
   text-align: center; font-style: italic;
+}
+
+/* Video Chapters */
+.video-chapters {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  justify-content: center;
+}
+.video-chapters li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .5rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 50px;
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all .25s var(--ease-smooth);
+}
+.video-chapters li a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(184,134,11,.05);
+}
+.chapter-time {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(184,134,11,.1);
+  padding: .15rem .5rem;
+  border-radius: 50px;
 }
 
 /* ============================================================
