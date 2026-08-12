@@ -68,6 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ---------- Video chapter chips (video page) ---------- */
+  const siteVideo = document.getElementById('site-video');
+  const chapterBtns = document.querySelectorAll('.chapter-btn');
+
+  if (siteVideo && chapterBtns.length) {
+    chapterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        siteVideo.currentTime = parseFloat(btn.dataset.seek) || 0;
+        siteVideo.play();
+        siteVideo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  }
+
   /* ---------- Header scroll shadow ---------- */
   const header = document.querySelector('.site-header');
   const handleScroll = () => {

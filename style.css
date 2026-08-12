@@ -548,7 +548,8 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   margin-top: var(--space-md);
   justify-content: center;
 }
-.video-chapters li a {
+.video-chapters li a,
+.video-chapters li .chapter-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -556,12 +557,15 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: 50px;
+  font-family: var(--font-sans);
   font-size: .82rem;
   font-weight: 500;
   color: var(--text-secondary);
+  cursor: pointer;
   transition: all .25s var(--ease-smooth);
 }
-.video-chapters li a:hover {
+.video-chapters li a:hover,
+.video-chapters li .chapter-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: rgba(184,134,11,.05);
