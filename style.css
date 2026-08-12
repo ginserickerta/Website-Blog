@@ -797,12 +797,10 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   flex-wrap: wrap; gap: var(--space-sm);
 }
 .footer-copy { font-size: .78rem; color: var(--text-muted); letter-spacing: .02em; }
-.footer-links { display: flex; gap: var(--space-md); list-style: none; }
-.footer-links a {
-  font-size: .78rem; color: var(--text-muted);
-  transition: color .25s var(--ease-smooth);
+.footer-author {
+  font-family: 'Prompt', sans-serif;
+  font-size: .82rem; color: var(--text-secondary); letter-spacing: .02em;
 }
-.footer-links a:hover { color: var(--text-primary); }
 
 /* ============================================================
    BACK TO TOP
