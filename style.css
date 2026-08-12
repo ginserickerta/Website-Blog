@@ -779,6 +779,12 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 }
 .pager-link.placeholder { visibility: hidden; }
 
+/* On the dedicated video page these sections already sit inside the page
+   container, so they drop the standalone-section framing they had when
+   they were stacked on the home page. */
+.article-page .video-section  { border-top: none; padding: 0 0 var(--space-xl); }
+.article-page .poster-section { padding: var(--space-xl) 0 0; }
+
 /* "Back to all books" call to action */
 .article-cta {
   max-width: 680px; margin: var(--space-lg) auto 0;

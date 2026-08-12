@@ -43,7 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const matchesQuery = !query || card.textContent.toLowerCase().includes(query);
       const show = matchesTag && matchesQuery;
       card.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
+      if (show) {
+        // Cards start at opacity 0 and are revealed on scroll. A card matched
+        // by a filter must be shown outright, or a search with a real match
+        // renders an empty list when the card never scrolled into view.
+        card.classList.add('visible');
+        visibleCount++;
+      }
     });
 
     if (emptyState) emptyState.hidden = visibleCount !== 0;
