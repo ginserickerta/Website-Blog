@@ -34,7 +34,25 @@
   --header-height: 72px;
 
   --ease-smooth: cubic-bezier(.25,.46,.45,.94);
+  --header-bg: rgba(249,249,246,.92);
 }
+
+/* ---------- Dark theme ---------- */
+html[data-theme="dark"] {
+  --bg-primary:   #15140F;
+  --bg-secondary: #1C1B15;
+  --bg-card:      #201F19;
+  --text-primary: #F2F0EA;
+  --text-secondary: #B8B6AE;
+  --text-muted:   #7C7A72;
+  --accent:       #D9A62E;
+  --accent-hover: #E8B94A;
+  --border:       #33322A;
+  --border-light: #2A2920;
+  --header-bg:    rgba(21,20,15,.85);
+}
+
+html, body { transition: background-color .3s var(--ease-smooth), color .3s var(--ease-smooth); }
 
 /* ---------- Reset & Base ---------- */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -69,7 +87,7 @@ img { max-width: 100%; display: block; }
 .site-header {
   position: sticky;
   top: 0; z-index: 100;
-  background: rgba(249,249,246,.92);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-light);
@@ -189,6 +207,29 @@ img { max-width: 100%; display: block; }
 .menu-toggle.active span:nth-child(2) { opacity: 0; }
 .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
+/* Theme toggle */
+.theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: none; border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer; flex-shrink: 0;
+  transition: all .25s var(--ease-smooth);
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle svg { width: 16px; height: 16px; }
+.theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+/* Reading progress bar */
+.reading-progress {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: var(--accent);
+  z-index: 999;
+  transition: width .12s linear;
+}
+
 /* ============================================================
    HERO  — text + cover image
    ============================================================ */
@@ -256,6 +297,45 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; gap: var(--space-sm);
 }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Book filter bar */
+.book-filter-bar {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--space-sm); margin-bottom: var(--space-lg);
+}
+.filter-search {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1 1 220px; min-width: 200px;
+  padding: .55rem .9rem;
+  border: 1px solid var(--border); border-radius: 50px;
+  background: var(--bg-card);
+  transition: border-color .25s var(--ease-smooth);
+}
+.filter-search:focus-within { border-color: var(--accent); }
+.filter-search svg { width: 15px; height: 15px; color: var(--text-muted); flex-shrink: 0; }
+.filter-search input {
+  border: none; outline: none; background: none;
+  font-family: var(--font-sans); font-size: .85rem; color: var(--text-primary);
+  width: 100%;
+}
+.filter-search input::placeholder { color: var(--text-muted); }
+
+.filter-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter-tag {
+  font-family: var(--font-sans);
+  font-size: .75rem; font-weight: 500; letter-spacing: .02em;
+  padding: .4rem .9rem; border-radius: 50px;
+  background: none; border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  transition: all .25s var(--ease-smooth);
+}
+.filter-tag:hover { border-color: var(--accent); color: var(--accent); }
+.filter-tag.active { background: var(--text-primary); border-color: var(--text-primary); color: var(--bg-primary); }
+
+.filter-empty {
+  font-size: .9rem; color: var(--text-muted); padding: var(--space-lg) 0;
+  text-align: center; font-style: italic;
+}
 
 /* Card — now has optional thumbnail */
 .book-card {
@@ -653,6 +733,8 @@ img { max-width: 100%; display: block; }
   :root { --header-height: 60px; --space-2xl: 4rem; --space-xl: 3rem; }
 
   .menu-toggle { display: flex; }
+
+  .book-filter-bar { flex-direction: column; align-items: stretch; }
 
   .nav-links {
     position: fixed; top: var(--header-height); left: 0; right: 0; bottom: 0;

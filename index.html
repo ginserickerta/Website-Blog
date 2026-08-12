@@ -11,6 +11,31 @@
   <meta property="og:title" content="5 bestbooks — หนังสือพัฒนาตัวเองที่ดีที่สุด 5 เล่ม" />
   <meta property="og:description" content="รวมสุดยอดหนังสือพัฒนาตัวเอง 5 เล่มที่ทุกคนควรอ่านอย่างน้อยหนึ่งครั้ง" />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/hero-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="5 bestbooks — หนังสือพัฒนาตัวเองที่ดีที่สุด 5 เล่ม" />
+  <meta name="twitter:description" content="รวมสุดยอดหนังสือพัฒนาตัวเอง 5 เล่มที่ทุกคนควรอ่านอย่างน้อยหนึ่งครั้ง" />
+  <meta name="twitter:image" content="images/hero-cover.png" />
+  <meta name="theme-color" content="#B8860B" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/logo.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "5 หนังสือพัฒนาตัวเองที่จะเปลี่ยนชีวิตคุณ",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "Book", "name": "Atomic Habits", "author": "James Clear", "genre": "Habits" } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "Book", "name": "How to Win Friends and Influence People", "author": "Dale Carnegie", "genre": "Communication" } },
+      { "@type": "ListItem", "position": 3, "item": { "@type": "Book", "name": "The War of Art", "author": "Steven Pressfield", "genre": "Creativity" } },
+      { "@type": "ListItem", "position": 4, "item": { "@type": "Book", "name": "The Psychology of Money", "author": "Morgan Housel", "genre": "Finance" } },
+      { "@type": "ListItem", "position": 5, "item": { "@type": "Book", "name": "The Courage to Be Disliked", "author": "Ichiro Kishimi & Fumitake Koga", "genre": "Philosophy" } }
+    ]
+  }
+  </script>
 
   <!-- Fonts (loaded via CSS @import) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,8 +43,20 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Apply saved/system theme before first paint (avoids flash) -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- Reading progress -->
+  <div class="reading-progress" id="reading-progress"></div>
 
   <!-- ================================================================
        HEADER  —  Logo image + text lockup
@@ -31,6 +68,11 @@
         <img src="images/logo.png" alt="5 bestbooks logo" class="logo-icon" />
         5&nbsp;<span>best</span>books
       </a>
+
+      <button class="theme-toggle" id="theme-toggle" aria-label="สลับธีมมืด/สว่าง">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
 
       <button class="menu-toggle" id="menu-toggle" aria-label="เปิดเมนู">
         <span></span><span></span><span></span>
@@ -89,8 +131,25 @@
 
       <p class="section-label">The Collection</p>
 
+      <!-- Search + tag filter -->
+      <div class="book-filter-bar">
+        <label class="filter-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="book-search" placeholder="ค้นหาชื่อหนังสือ หรือผู้เขียน..." aria-label="ค้นหาหนังสือ" />
+        </label>
+        <div class="filter-tags" id="filter-tags" role="group" aria-label="กรองตามหมวดหมู่">
+          <button type="button" class="filter-tag active" data-tag="all">ทั้งหมด</button>
+          <button type="button" class="filter-tag" data-tag="Habits">Habits</button>
+          <button type="button" class="filter-tag" data-tag="Communication">Communication</button>
+          <button type="button" class="filter-tag" data-tag="Creativity">Creativity</button>
+          <button type="button" class="filter-tag" data-tag="Finance">Finance</button>
+          <button type="button" class="filter-tag" data-tag="Philosophy">Philosophy</button>
+        </div>
+      </div>
+      <p class="filter-empty" id="filter-empty" hidden>ไม่พบหนังสือที่ตรงกับคำค้นหา</p>
+
       <!-- Book 01 ──────────────────────────────────── -->
-      <article class="book-card" id="book-01">
+      <article class="book-card" id="book-01" data-tag="Habits">
         <div class="book-number">01</div>
         <div class="book-thumb">
           <img src="images/book-atomic-habits.webp" alt="Atomic Habits book cover" />
@@ -113,7 +172,7 @@
       </article>
 
       <!-- Book 02 ──────────────────────────────────── -->
-      <article class="book-card" id="book-02">
+      <article class="book-card" id="book-02" data-tag="Communication">
         <div class="book-number">02</div>
         <div class="book-thumb">
           <img src="images/book-win-friends.webp" alt="How to Win Friends book cover" />
@@ -136,7 +195,7 @@
       </article>
 
       <!-- Book 03 ──────────────────────────────────── -->
-      <article class="book-card" id="book-03">
+      <article class="book-card" id="book-03" data-tag="Creativity">
         <div class="book-number">03</div>
         <div class="book-thumb">
           <img src="images/book-war-of-art.jpg" alt="The War of Art book cover" />
@@ -159,7 +218,7 @@
       </article>
 
       <!-- Book 04 ──────────────────────────────────── -->
-      <article class="book-card" id="book-04">
+      <article class="book-card" id="book-04" data-tag="Finance">
         <div class="book-number">04</div>
         <div class="book-thumb">
           <img src="images/book-psychology-of-money.jpg" alt="The Psychology of Money book cover" />
@@ -182,7 +241,7 @@
       </article>
 
       <!-- Book 05 ──────────────────────────────────── -->
-      <article class="book-card" id="book-05">
+      <article class="book-card" id="book-05" data-tag="Philosophy">
         <div class="book-number">05</div>
         <div class="book-thumb">
           <img src="images/book-courage-to-be-disliked.jpg" alt="The Courage to Be Disliked book cover" />

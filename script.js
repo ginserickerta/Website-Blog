@@ -4,6 +4,64 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ---------- Theme toggle (dark/light) ---------- */
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  }
+
+  /* ---------- Reading progress bar ---------- */
+  const progressBar = document.getElementById('reading-progress');
+  if (progressBar) {
+    const updateProgress = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  /* ---------- Book search & tag filter ---------- */
+  const searchInput = document.getElementById('book-search');
+  const filterTags  = document.querySelectorAll('.filter-tag');
+  const bookCards   = document.querySelectorAll('.book-card');
+  const emptyState  = document.getElementById('filter-empty');
+  let activeTag = 'all';
+
+  const applyFilters = () => {
+    const query = (searchInput?.value || '').trim().toLowerCase();
+    let visibleCount = 0;
+
+    bookCards.forEach(card => {
+      const matchesTag = activeTag === 'all' || card.dataset.tag === activeTag;
+      const matchesQuery = !query || card.textContent.toLowerCase().includes(query);
+      const show = matchesTag && matchesQuery;
+      card.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+
+    if (emptyState) emptyState.hidden = visibleCount !== 0;
+  };
+
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+
+  filterTags.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterTags.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTag = btn.dataset.tag;
+      applyFilters();
+    });
+  });
+
   /* ---------- Header scroll shadow ---------- */
   const header = document.querySelector('.site-header');
   const handleScroll = () => {
