@@ -829,6 +829,72 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
 /* ============================================================
+   PAGE TRANSITIONS  —  cross-document View Transitions API
+   Browsers with support animate between pages; the rest simply
+   navigate as before, so there is no regression either way.
+   ============================================================ */
+@view-transition { navigation: auto; }
+
+@keyframes vtOut { to   { opacity: 0; transform: translateY(-10px); } }
+@keyframes vtIn  { from { opacity: 0; transform: translateY(14px);  } }
+
+::view-transition-old(root) { animation: vtOut .25s var(--ease-smooth) both; }
+::view-transition-new(root) { animation: vtIn  .40s var(--ease-smooth) both; }
+
+/* Pace every morphing group (covers, header) with the page fade */
+::view-transition-group(*) {
+  animation-duration: .42s;
+  animation-timing-function: var(--ease-smooth);
+}
+
+/* Lift the header out of the page snapshot so it holds still while the
+   content underneath swaps.
+   Desktop only: a view-transition-name makes the element a containing
+   block for fixed descendants, and below 769px .nav-links is a fixed
+   full-screen overlay that lives inside the header — naming the header
+   there would collapse the mobile menu to zero height. Below that
+   breakpoint the header simply animates along with the page. */
+@media (min-width: 769px) {
+  .site-header { view-transition-name: site-header; }
+}
+
+/* Pair each list thumbnail with its article hero cover, so the cover
+   travels from the book list into the article instead of cross-fading.
+   On the home page only the first selector matches; on a book page
+   only the second — the shared name is what links the two documents.
+   The name sits on the rounded, shadowed wrapper rather than the image
+   element inside it, so the corners and shadow travel along with it. */
+#book-01 .book-thumb,
+body[data-book="atomic-habits"] .article-hero-cover
+  { view-transition-name: vt-atomic-habits; }
+
+#book-02 .book-thumb,
+body[data-book="win-friends"] .article-hero-cover
+  { view-transition-name: vt-win-friends; }
+
+#book-03 .book-thumb,
+body[data-book="war-of-art"] .article-hero-cover
+  { view-transition-name: vt-war-of-art; }
+
+#book-04 .book-thumb,
+body[data-book="psychology-of-money"] .article-hero-cover
+  { view-transition-name: vt-psychology-of-money; }
+
+#book-05 .book-thumb,
+body[data-book="courage-to-be-disliked"] .article-hero-cover
+  { view-transition-name: vt-courage-to-be-disliked; }
+
+/* Respect reduced-motion: keep a brief cross-fade, drop the movement */
+@keyframes vtFlatOut { to   { opacity: 0; } }
+@keyframes vtFlatIn  { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) { animation: vtFlatOut .18s linear both; }
+  ::view-transition-new(root) { animation: vtFlatIn  .18s linear both; }
+  ::view-transition-group(*)  { animation-duration: .18s; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
@@ -839,7 +905,13 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   .book-filter-bar { flex-direction: column; align-items: stretch; }
 
   .nav-links {
-    position: fixed; top: var(--header-height); left: 0; right: 0; bottom: 0;
+    position: fixed; top: var(--header-height); left: 0; right: 0;
+    /* Explicit height instead of bottom:0. The header is a containing
+       block for its fixed children (backdrop-filter does that, as would
+       view-transition-name), so bottom:0 resolves against the header box
+       and collapses this overlay to zero height. Viewport units stay
+       viewport-relative either way. */
+    height: calc(100dvh - var(--header-height));
     background: var(--bg-primary);
     flex-direction: column; align-items: center; justify-content: center;
     gap: var(--space-lg); opacity: 0; pointer-events: none;
